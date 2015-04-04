@@ -1,6 +1,19 @@
 ## Function definitions to be used to prepare text for sentiment analysis and to assign scores/sentiment to text ##
-## Import statements and required packages ##
 
+''' 
+    Text Processing includes:
+        1. Stopword Removal --> remove high frequency words with little meaning ("it","in","the",etc.)
+        2. Prepend "NEG_" to certain words --> improves sentiment accuracy in regards to subtleties in text
+            - specifically related to positive words used with a negative light
+            - i.e. "not great at scanning." will become "not NEG_great NEG_at NEG_scanning"
+        3. Part-of-Speech Tagging
+        4. Lemmatization --> reduce word to its lemma or root
+            - i.e. "walking" --> "walk" ; "came" --> "come"
+            - done to increase matches to words in sentiment dictionary
+        5. Tokenization --> splitting reviews into individual words and removing punctuation marks
+'''
+
+# Import statements and required packages
 import pandas as pd
 import re
 import nltk
@@ -10,22 +23,6 @@ from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
 
-
-''' 
-
-    Text Processing includes:
-        1. Stopword Removal --> remove high frequency words with little meaning ("I","you","the",etc.)
-        2. Prepend "NEG_" to certain words --> improves sentiment accuracy in regards to subtleties in text
-            - specifically related to positive words used with a negative light
-            - i.e. "not great at scanning." will become "not NEG_great NEG_at NEG_scanning"
-        3. Part-of-Speech Tagging
-        4. Lemmatization --> reduce word to its lemma or root
-            - i.e. "walking" --> "walk" ; "came" --> "come"
-            - done to increase matches to words in sentiment dictionary
-        5. Tokenization --> splitting reviews into individual words and removal of punctuation marks
-
-
-'''
 
 # Remove stopwords except for "not" and "no" to maintain for transform_neg function
 def remove_stopwords(x):
@@ -91,7 +88,6 @@ def sentiment_dict(sentimentData):
 # Score each review based on words in review matching to those found in sentiment dictionary
 def sentiment_score(x):
     ''' x should be a list of tokenized reviews '''
-    # take note of location of "SentiStrengthDictionary.csv"
     review = x
 
     # Change path to location of SentiStrengthDictionary.csv
